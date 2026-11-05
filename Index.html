@@ -1,1 +1,970 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADN Shoes - Belanja Sepatu Terlengkap & Terpercaya</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-full bg-gray-50 text-gray-900 font-sans flex flex-col justify-between antialiased">
 
+    <!-- Custom Notification Toast -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-x-full transition-transform duration-300 ease-in-out bg-gray-900 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center space-x-3">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-green-400 text-lg"></i>
+        <span id="toast-message" class="text-sm font-medium">Berhasil ditambahkan ke keranjang!</span>
+    </div>
+
+    <!-- Floating WhatsApp Contact Button -->
+    <a href="https://wa.me/6288210664855?text=Halo%20ADN%20Shoes,%20saya%20ingin%20bertanya%20mengenai%20produk%20sepatu." target="_blank" class="fixed bottom-6 right-6 z-40 bg-emerald-500 hover:bg-emerald-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl transition-all hover:scale-110">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Header / Navbar -->
+    <header class="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-md">
+                    <i class="fa-solid fa-shoe-prints text-xl"></i>
+                </div>
+                <span class="text-2xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">ADN Shoes</span>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden lg:flex items-center space-x-8 text-sm font-semibold text-gray-600">
+                <a href="#catalog" class="hover:text-indigo-600 transition-colors">Koleksi</a>
+                <a href="#purchase-guide" class="hover:text-indigo-600 transition-colors">Cara Pembelian</a>
+                <a href="#payment-guide" class="hover:text-indigo-600 transition-colors">Metode Pembayaran</a>
+                <a href="#store-info" class="hover:text-indigo-600 transition-colors">Alamat & Kontak</a>
+            </nav>
+
+            <!-- Search bar desktop -->
+            <div class="hidden md:flex items-center flex-1 max-w-xs mx-6">
+                <div class="relative w-full">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="search-input" placeholder="Cari sepatu..." class="w-full pl-11 pr-4 py-2 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all">
+                </div>
+            </div>
+
+            <!-- Cart & Admin Restock button -->
+            <div class="flex items-center space-x-3">
+                <button onclick="openAdminModal()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-2">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="hidden sm:inline">Restock & Etalase</span>
+                </button>
+                <button onclick="toggleCart()" class="relative bg-gray-100 hover:bg-indigo-50 hover:text-indigo-600 p-3 rounded-xl transition-all flex items-center justify-center">
+                    <i class="fa-solid fa-bag-shopping text-lg"></i>
+                    <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-indigo-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md hidden">0</span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Search -->
+        <div class="px-4 pb-4 md:hidden">
+            <div class="relative w-full">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input type="text" id="mobile-search-input" placeholder="Cari merk atau model sepatu..." class="w-full pl-11 pr-4 py-2 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-16">
+        <!-- Hero Banner -->
+        <div class="relative bg-gradient-to-r from-indigo-900 via-indigo-800 to-violet-900 rounded-3xl p-8 md:p-12 text-white shadow-xl overflow-hidden">
+            <div class="absolute right-0 bottom-0 opacity-10 transform translate-x-10 translate-y-10">
+                <i class="fa-solid fa-shoe-prints text-[300px]"></i>
+            </div>
+            <div class="relative z-10 max-w-xl">
+                <span class="bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider border border-indigo-400/30">ADN Shoes Original & Terpercaya</span>
+                <h1 class="text-3xl md:text-5xl font-extrabold mt-4 mb-4 leading-tight">Langkah Penuh Gaya Bersama ADN Shoes</h1>
+                <p class="text-indigo-200 text-sm md:text-base mb-6">Temukan sneaker original idamanmu dengan kemudahan metode pembayaran Bank Lokal (BRI, BJB, Mandiri, BNI, BSI), Fapster, maupun COD.</p>
+                <div class="flex flex-wrap gap-3">
+                    <a href="#catalog" class="inline-flex items-center space-x-2 bg-white text-indigo-900 px-6 py-3 rounded-xl font-semibold text-sm hover:bg-indigo-50 transition-all shadow-lg">
+                        <span>Mulai Belanja</span>
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </a>
+                    <a href="https://wa.me/6288210664855?text=Halo%20ADN%20Shoes,%20saya%20mau%20konsultasi%20sepatu" target="_blank" class="inline-flex items-center space-x-2 bg-emerald-500 hover:bg-emerald-600 text-white px-6 py-3 rounded-xl font-semibold text-sm transition-all shadow-lg">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Chat WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bagian Informasi Alamat & Kontak -->
+        <section id="store-info" class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+                <span class="bg-indigo-50 text-indigo-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Lokasi & Kontak Resmi ADN Shoes</span>
+                <h2 class="text-2xl font-bold text-gray-900 mt-3 mb-4">Kunjungi Offline Store Kami</h2>
+                <p class="text-gray-600 text-sm leading-relaxed mb-6">Anda juga bisa datang langsung untuk fitting ukuran atau mengambil pesanan secara langsung di store fisik ADN Shoes.</p>
+                
+                <div class="space-y-4 text-sm">
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-indigo-50 text-indigo-600 p-2.5 rounded-xl mt-0.5">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold text-gray-900 block">Alamat Lengkap Store:</span>
+                            <span class="text-gray-600">Jalan Lewidahu nomor 62, Indonesia</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-emerald-50 text-emerald-600 p-2.5 rounded-xl mt-0.5">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold text-gray-900 block">WhatsApp Customer Service:</span>
+                            <a href="https://wa.me/6288210664855" target="_blank" class="text-emerald-600 font-semibold hover:underline">+62 882-1066-4855</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Google Maps Embed -->
+            <div class="bg-gray-100 rounded-2xl overflow-hidden border border-gray-200 h-72 shadow-inner relative">
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.5!2d108.2!3d-7.35!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zTGV3aWRhaHU!5e0!3m2!1sid!2sid!4v1650000000000!5m2!1sid!2sid"
+                    title="Google Maps Alamat Jalan Lewidahu 62">
+                </iframe>
+            </div>
+        </section>
+
+        <!-- Panduan Metode Pembelian -->
+        <section id="purchase-guide" class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
+            <div class="text-center max-w-xl mx-auto mb-10">
+                <span class="bg-indigo-50 text-indigo-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Langkah Mudah</span>
+                <h2 class="text-2xl font-bold text-gray-900 mt-2">Metode Pembelian di ADN Shoes</h2>
+                <p class="text-xs text-gray-500 mt-1">Ikuti 4 langkah simpel berikut untuk memesan sneaker impianmu.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 text-center relative">
+                    <div class="w-10 h-10 bg-indigo-600 text-white font-bold rounded-xl flex items-center justify-center mx-auto mb-4 shadow-md text-sm">1</div>
+                    <h3 class="font-bold text-gray-900 text-sm mb-1">Pilih Produk & Ukuran</h3>
+                    <p class="text-xs text-gray-500">Pilih model sneaker favoritmu dan tentukan ukuran EU yang sesuai.</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 text-center relative">
+                    <div class="w-10 h-10 bg-indigo-600 text-white font-bold rounded-xl flex items-center justify-center mx-auto mb-4 shadow-md text-sm">2</div>
+                    <h3 class="font-bold text-gray-900 text-sm mb-1">Masukkan ke Keranjang</h3>
+                    <p class="text-xs text-gray-500">Klik tombol Beli dan periksa kembali daftar belanjaanmu di menu keranjang.</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 text-center relative">
+                    <div class="w-10 h-10 bg-indigo-600 text-white font-bold rounded-xl flex items-center justify-center mx-auto mb-4 shadow-md text-sm">3</div>
+                    <h3 class="font-bold text-gray-900 text-sm mb-1">Isi Data & Pembayaran</h3>
+                    <p class="text-xs text-gray-500">Masukkan alamat pengiriman di Jl. Lewidahu No. 62 atau alamatmu, lalu pilih Bank, Fapster, atau COD.</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 text-center relative">
+                    <div class="w-10 h-10 bg-indigo-600 text-white font-bold rounded-xl flex items-center justify-center mx-auto mb-4 shadow-md text-sm">4</div>
+                    <h3 class="font-bold text-gray-900 text-sm mb-1">Konfirmasi & Kirim</h3>
+                    <p class="text-xs text-gray-500">Selesaikan transaksi, pesanan langsung diproses dan dikirim ke alamat tujuan.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panduan Metode Pembayaran -->
+        <section id="payment-guide" class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
+            <div class="text-center max-w-xl mx-auto mb-10">
+                <span class="bg-indigo-50 text-indigo-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Aman & Fleksibel</span>
+                <h2 class="text-2xl font-bold text-gray-900 mt-2">Pilihan Metode Pembayaran ADN Shoes</h2>
+                <p class="text-xs text-gray-500 mt-1">Kami menyediakan opsi pembayaran transfer bank terlengkap di Indonesia, Fapster, dan COD (Bayar di Tempat).</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Metode Bank -->
+                <div class="p-6 bg-gradient-to-br from-indigo-50/50 to-white rounded-2xl border border-indigo-100 flex items-start space-x-4">
+                    <div class="bg-indigo-600 text-white p-3.5 rounded-2xl text-xl shadow-md">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-900 text-base mb-1">Transfer Bank Lokal</h3>
+                        <p class="text-xs text-gray-600 mb-3">Mendukung berbagai bank resmi di Indonesia:</p>
+                        <ul class="text-xs text-gray-500 space-y-1 font-medium">
+                            <li>• Bank BRI: 0012-01-000000 a.n ADN Shoes</li>
+                            <li>• Bank BJB: 0055-1234-5678 a.n ADN Shoes</li>
+                            <li>• Bank Mandiri: 131-00-99887766 a.n ADN Shoes</li>
+                            <li>• Bank BNI: 0234567890 a.n ADN Shoes</li>
+                            <li>• Bank BSI: 7123456789 a.n ADN Shoes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Metode Fapster -->
+                <div class="p-6 bg-gradient-to-br from-amber-50/50 to-white rounded-2xl border border-amber-100 flex items-start space-x-4">
+                    <div class="bg-amber-500 text-white p-3.5 rounded-2xl text-xl shadow-md">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-900 text-base mb-1">Fapster Digital Account</h3>
+                        <p class="text-xs text-gray-600 mb-3">Pembayaran instan dan otomatis menggunakan akun digital Fapster Anda tanpa perlu konfirmasi manual.</p>
+                        <ul class="text-xs text-gray-500 space-y-1 font-medium">
+                            <li>• Verifikasi instan dalam detik</li>
+                            <li>• Bebas biaya admin</li>
+                            <li>• Keamanan tingkat tinggi</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Metode COD -->
+                <div class="p-6 bg-gradient-to-br from-emerald-50/50 to-white rounded-2xl border border-emerald-100 flex items-start space-x-4">
+                    <div class="bg-emerald-600 text-white p-3.5 rounded-2xl text-xl shadow-md">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-gray-900 text-base mb-1">COD (Cash on Delivery)</h3>
+                        <p class="text-xs text-gray-600 mb-3">Bayar langsung saat barang pesanan tiba di rumah atau diambil di toko kami.</p>
+                        <ul class="text-xs text-gray-500 space-y-1 font-medium">
+                            <li>• Aman, bayar saat barang diterima</li>
+                            <li>• Berlaku untuk area tertentu / seluruh kurir</li>
+                            <li>• Tanpa repot transfer</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Kategori & Katalog -->
+        <div id="catalog">
+            <div class="flex items-center justify-between mb-8 overflow-x-auto pb-2">
+                <div class="flex space-x-2 min-w-max" id="category-filters">
+                    <button onclick="filterCategory('All')" class="category-btn active px-5 py-2.5 rounded-xl text-sm font-medium bg-indigo-600 text-white shadow-md shadow-indigo-200 transition-all">Semua</button>
+                    <button onclick="filterCategory('Nike')" class="category-btn px-5 py-2.5 rounded-xl text-sm font-medium bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all">Nike</button>
+                    <button onclick="filterCategory('Adidas')" class="category-btn px-5 py-2.5 rounded-xl text-sm font-medium bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all">Adidas</button>
+                    <button onclick="filterCategory('Puma')" class="category-btn px-5 py-2.5 rounded-xl text-sm font-medium bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all">Puma</button>
+                    <button onclick="filterCategory('New Balance')" class="category-btn px-5 py-2.5 rounded-xl text-sm font-medium bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all">New Balance</button>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Products injected via JS -->
+            </div>
+
+            <!-- Empty State Search -->
+            <div id="empty-state" class="hidden text-center py-20">
+                <div class="text-gray-300 text-6xl mb-4">
+                    <i class="fa-solid fa-face-frown"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-700">Sepatu tidak ditemukan</h3>
+                <p class="text-sm text-gray-500 mt-1">Coba gunakan kata kunci lain yang sesuai.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin / Restock Modal Drawer -->
+    <div id="admin-modal" class="fixed inset-0 z-50 overflow-y-auto hidden flex items-center justify-center p-4">
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" onclick="closeAdminModal()"></div>
+        <div class="relative bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-6 md:p-8 z-10 max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-100 mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900">Manajemen Etalase & Restock</h3>
+                    <p class="text-xs text-gray-500">Tambah produk baru, ubah status stok kosong, atau restock etalase ADN Shoes.</p>
+                </div>
+                <button onclick="closeAdminModal()" class="text-gray-400 hover:text-gray-600 p-2">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="overflow-y-auto flex-1 space-y-6 pr-1">
+                <!-- Form Tambah Produk Baru -->
+                <div class="bg-indigo-50/50 p-5 rounded-2xl border border-indigo-100">
+                    <h4 class="text-sm font-bold text-indigo-900 mb-3 flex items-center space-x-2">
+                        <i class="fa-solid fa-plus-circle"></i>
+                        <span>Tambah Produk Baru ke Etalase</span>
+                    </h4>
+                    <form id="add-product-form" onsubmit="addNewProduct(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div>
+                            <label class="block font-medium text-gray-600 mb-1">Nama Sepatu</label>
+                            <input type="text" id="new-name" required placeholder="Contoh: Nike Air Jordan 1" class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block font-medium text-gray-600 mb-1">Merk</label>
+                            <select id="new-brand" class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="Nike">Nike</option>
+                                <option value="Adidas">Adidas</option>
+                                <option value="Puma">Puma</option>
+                                <option value="New Balance">New Balance</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-medium text-gray-600 mb-1">Harga (Rp)</label>
+                            <input type="number" id="new-price" required placeholder="1750000" class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block font-medium text-gray-600 mb-1">URL Gambar</label>
+                            <input type="url" id="new-image" placeholder="https://images.unsplash.com/..." class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div class="sm:col-span-2 pt-2">
+                            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-xl shadow-md transition-all">
+                                Tambahkan Produk ke Etalase
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Daftar Produk untuk Restock / Tandai Habis -->
+                <div>
+                    <h4 class="text-sm font-bold text-gray-900 mb-3">Kelola Status Stok Produk</h4>
+                    <div id="admin-product-list" class="space-y-3 max-h-64 overflow-y-auto pr-2">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Sidebar Drawer -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <!-- Cart Header -->
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-bag-shopping text-indigo-600 text-xl"></i>
+                        <h2 class="text-lg font-bold text-gray-900">Keranjang Belanja</h2>
+                    </div>
+                    <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-600 p-2 rounded-xl">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4 divide-y divide-gray-100">
+                    <!-- Items injected here -->
+                </div>
+
+                <!-- Cart Footer / Checkout -->
+                <div class="p-6 border-t border-gray-100 bg-gray-50">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-sm text-gray-500">Total Item</span>
+                        <span id="cart-total-qty" class="text-sm font-semibold text-gray-900">0 pcs</span>
+                    </div>
+                    <div class="flex justify-between mb-4">
+                        <span class="text-base font-bold text-gray-900">Total Harga</span>
+                        <span id="cart-total-price" class="text-lg font-extrabold text-indigo-600">Rp 0</span>
+                    </div>
+                    <button onclick="openCheckoutModal()" id="checkout-btn" disabled class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-indigo-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        Lanjut ke Pembayaran
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 overflow-y-auto hidden flex items-center justify-center p-4">
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
+        <div class="relative bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 md:p-8 z-10 overflow-hidden">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-100 mb-6">
+                <h3 class="text-xl font-bold text-gray-900">Checkout & Pembayaran ADN Shoes</h3>
+                <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <form id="checkout-form" onsubmit="processCheckout(event)" class="space-y-6">
+                <!-- Data Penerima -->
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
+                        <i class="fa-solid fa-user-shield text-indigo-600"></i>
+                        <span>Informasi Pengiriman</span>
+                    </h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Nama Lengkap</label>
+                            <input type="text" id="buyer-name" required placeholder="Masukkan nama lengkap" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Nomor WhatsApp / Telepon</label>
+                            <input type="tel" id="buyer-phone" required placeholder="Contoh: 081234567890" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Alamat Lengkap (Bisa kirim ke Jl. Lewidahu No. 62 atau alamat anda)</label>
+                            <textarea id="buyer-address" required rows="2" placeholder="Jalan, Nomor Rumah, Kecamatan, Kota" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">Jalan Lewidahu nomor 62, </textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metode Pembayaran -->
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-3 flex items-center space-x-2">
+                        <i class="fa-solid fa-wallet text-indigo-600"></i>
+                        <span>Pilih Metode Pembayaran</span>
+                    </h4>
+                    
+                    <div class="grid grid-cols-3 gap-3 mb-4">
+                        <!-- Pilihan Bank -->
+                        <label class="payment-method-card border-2 border-indigo-600 bg-indigo-50/50 rounded-2xl p-3 flex flex-col cursor-pointer transition-all relative text-center">
+                            <input type="radio" name="payment_method" value="bank" checked onchange="switchPaymentMethod('bank')" class="absolute top-3 right-3 accent-indigo-600">
+                            <i class="fa-solid fa-building-columns text-indigo-600 text-lg mb-1"></i>
+                            <span class="font-bold text-xs text-gray-900">Bank Transfer</span>
+                        </label>
+
+                        <!-- Pilihan Fapster -->
+                        <label class="payment-method-card border-2 border-gray-200 bg-white rounded-2xl p-3 flex flex-col cursor-pointer transition-all relative text-center hover:border-gray-300">
+                            <input type="radio" name="payment_method" value="fapster" onchange="switchPaymentMethod('fapster')" class="absolute top-3 right-3 accent-indigo-600">
+                            <i class="fa-solid fa-bolt text-amber-500 text-lg mb-1"></i>
+                            <span class="font-bold text-xs text-gray-900">Fapster</span>
+                        </label>
+
+                        <!-- Pilihan COD -->
+                        <label class="payment-method-card border-2 border-gray-200 bg-white rounded-2xl p-3 flex flex-col cursor-pointer transition-all relative text-center hover:border-gray-300">
+                            <input type="radio" name="payment_method" value="cod" onchange="switchPaymentMethod('cod')" class="absolute top-3 right-3 accent-indigo-600">
+                            <i class="fa-solid fa-truck-fast text-emerald-600 text-lg mb-1"></i>
+                            <span class="font-bold text-xs text-gray-900">COD</span>
+                        </label>
+                    </div>
+
+                    <!-- Detail Instruksi Bank -->
+                    <div id="bank-instructions" class="p-4 bg-gray-50 rounded-xl border border-gray-200 space-y-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Pilih Bank Tujuan Transfer</label>
+                            <select id="bank-select" class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="BRI">Bank BRI (No. Rek: 0012-01-000000 a.n ADN Shoes)</option>
+                                <option value="BJB">Bank BJB (No. Rek: 0055-1234-5678 a.n ADN Shoes)</option>
+                                <option value="Mandiri">Bank Mandiri (No. Rek: 131-00-99887766 a.n ADN Shoes)</option>
+                                <option value="BNI">Bank BNI (No. Rek: 0234567890 a.n ADN Shoes)</option>
+                                <option value="BSI">Bank BSI (No. Rek: 7123456789 a.n ADN Shoes)</option>
+                            </select>
+                        </div>
+                        <p class="text-xs text-gray-500 italic">*Silakan transfer sesuai total nominal ke rekening bank yang dipilih.</p>
+                    </div>
+
+                    <!-- Detail Instruksi Fapster -->
+                    <div id="fapster-instructions" class="p-4 bg-gray-50 rounded-xl border border-gray-200 space-y-3 hidden">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">ID Akun Fapster / Email Terdaftar</label>
+                            <input type="text" id="fapster-id" placeholder="Contoh: user_fapster99 / email@domain.com" class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <p class="text-xs text-gray-500 italic">*Pembayaran instan aman menggunakan saldo Fapster Anda.</p>
+                    </div>
+
+                    <!-- Detail Instruksi COD -->
+                    <div id="cod-instructions" class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 space-y-2 hidden">
+                        <div class="flex items-center space-x-2 text-emerald-800 font-semibold text-xs">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Cash on Delivery (COD) Dipilih</span>
+                        </div>
+                        <p class="text-xs text-emerald-700">Anda akan membayar secara tunai langsung kepada kurir saat pesanan sampai di alamat tujuan atau saat diambil di store Jalan Lewidahu No. 62.</p>
+                    </div>
+                </div>
+
+                <!-- Tombol Submit Pesanan -->
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center space-x-2">
+                    <span>Konfirmasi & Pesan Sekarang</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Order Success Modal -->
+    <div id="success-modal" class="fixed inset-0 z-50 overflow-y-auto hidden flex items-center justify-center p-4">
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="relative bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 z-10 text-center">
+            <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Pesanan ADN Shoes Berhasil!</h3>
+            <p class="text-sm text-gray-500 mb-6">Terima kasih telah berbelanja di ADN Shoes. Detail transaksi dan instruksi selanjutnya telah dikirim ke WhatsApp Anda.</p>
+            
+            <div class="bg-gray-50 p-4 rounded-2xl text-left mb-6 space-y-2 text-xs border border-gray-100">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">ID Transaksi:</span>
+                    <span id="receipt-id" class="font-bold text-gray-800">#ADN-883920</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Metode:</span>
+                    <span id="receipt-method" class="font-bold text-indigo-600">Bank BRI</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Total Pembayaran:</span>
+                    <span id="receipt-total" class="font-bold text-gray-900">Rp 0</span>
+                </div>
+            </div>
+
+            <button onclick="closeSuccessModal()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition-all">
+                Kembali ke Beranda
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-xl">
+                    <i class="fa-solid fa-shoe-prints text-base"></i>
+                </div>
+                <span class="text-lg font-bold text-gray-900">ADN Shoes Indonesia</span>
+            </div>
+            <p class="text-xs text-gray-500 text-center">© 2026 ADN Shoes. Alamat Store: Jalan Lewidahu nomor 62. Pembayaran via Bank (BRI, BJB, Mandiri, BNI, BSI), Fapster & COD.</p>
+            <div class="flex space-x-4 text-gray-400 text-lg">
+                <a href="https://wa.me/6288210664855" target="_blank" class="hover:text-emerald-600 transition-colors"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="#" class="hover:text-indigo-600 transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="hover:text-indigo-600 transition-colors"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: "Nike Air Force 1 '07",
+                brand: "Nike",
+                price: 1549000,
+                rating: 4.9,
+                reviews: 128,
+                image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=600&q=80",
+                sizes: [39, 40, 41, 42, 43],
+                inStock: true
+            },
+            {
+                id: 2,
+                name: "Adidas Ultraboost Light",
+                brand: "Adidas",
+                price: 2899000,
+                rating: 4.8,
+                reviews: 94,
+                image: "https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?auto=format&fit=crop&w=600&q=80",
+                sizes: [40, 41, 42, 43, 44],
+                inStock: true
+            },
+            {
+                id: 3,
+                name: "Puma RS-X Efekt",
+                brand: "Puma",
+                price: 1799000,
+                rating: 4.7,
+                reviews: 65,
+                image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=600&q=80",
+                sizes: [39, 40, 41, 42],
+                inStock: false
+            },
+            {
+                id: 4,
+                name: "New Balance 574 Legacy",
+                brand: "New Balance",
+                price: 1499000,
+                rating: 4.9,
+                reviews: 142,
+                image: "https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=600&q=80",
+                sizes: [40, 41, 42, 43, 44],
+                inStock: true
+            },
+            {
+                id: 5,
+                name: "Nike Dunk Low Retro",
+                brand: "Nike",
+                price: 1729000,
+                rating: 4.9,
+                reviews: 210,
+                image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=600&q=80",
+                sizes: [39, 40, 41, 42, 43],
+                inStock: true
+            },
+            {
+                id: 6,
+                name: "Adidas Samba OG",
+                brand: "Adidas",
+                price: 2199000,
+                rating: 5.0,
+                reviews: 320,
+                image: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=600&q=80",
+                sizes: [38, 39, 40, 41, 42],
+                inStock: true
+            },
+            {
+                id: 7,
+                name: "Puma Suede Classic XXI",
+                brand: "Puma",
+                price: 1299000,
+                rating: 4.6,
+                reviews: 51,
+                image: "https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?auto=format&fit=crop&w=600&q=80",
+                sizes: [40, 41, 42, 43],
+                inStock: true
+            },
+            {
+                id: 8,
+                name: "New Balance 990v6",
+                brand: "New Balance",
+                price: 3499000,
+                rating: 4.9,
+                reviews: 88,
+                image: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=600&q=80",
+                sizes: [41, 42, 43, 44, 45],
+                inStock: false
+            }
+        ];
+
+        let cart = [];
+        let currentFilter = 'All';
+        let searchQuery = '';
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(number);
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            const emptyState = document.getElementById('empty-state');
+            
+            let filtered = products.filter(p => {
+                const matchCategory = currentFilter === 'All' || p.brand === currentFilter;
+                const matchSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.brand.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchCategory && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = filtered.map(p => `
+                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden group relative">
+                    ${!p.inStock ? '<div class="absolute inset-0 bg-white/70 backdrop-blur-[2px] z-20 flex items-center justify-center"><span class="bg-rose-600 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-lg uppercase tracking-wider">Stok Kosong</span></div>' : ''}
+                    <div class="relative bg-gray-100 h-56 overflow-hidden flex items-center justify-center">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-xs font-semibold px-2.5 py-1 rounded-full text-gray-700 shadow-sm">${p.brand}</span>
+                        <img src="${p.image}" alt="${p.name}" class="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x400/f3f4f6/9ca3af?text=Sepatu'">
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow justify-between">
+                        <div>
+                            <div class="flex items-center space-x-1 text-xs text-amber-500 mb-1">
+                                <i class="fa-solid fa-star"></i>
+                                <span class="font-bold text-gray-700">${p.rating}</span>
+                                <span class="text-gray-400">(${p.reviews})</span>
+                            </div>
+                            <h3 class="font-bold text-gray-900 text-base mb-2 line-clamp-1">${p.name}</h3>
+                            <div class="mb-4">
+                                <span class="text-xs text-gray-400 block mb-1">Pilih Ukuran (EU):</span>
+                                <div class="flex flex-wrap gap-1.5" id="sizes-${p.id}">
+                                    ${p.sizes.map((s, idx) => `
+                                        <button onclick="selectSize(${p.id}, ${s})" class="size-btn-${p.id} px-2.5 py-1 text-xs font-medium rounded-lg border ${idx === 0 ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'} transition-all" data-size="${s}">${s}</button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                            <span class="text-base font-extrabold text-indigo-600">${formatRupiah(p.price)}</span>
+                            <button onclick="addToCart(${p.id})" ${!p.inStock ? 'disabled' : ''} class="bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-md shadow-indigo-100 transition-all flex items-center space-x-1.5">
+                                <i class="fa-solid fa-cart-plus"></i>
+                                <span>Beli</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        const selectedSizes = {};
+        products.forEach(p => { selectedSizes[p.id] = p.sizes[0]; });
+
+        function selectSize(productId, size) {
+            selectedSizes[productId] = size;
+            const buttons = document.querySelectorAll(`.size-btn-${productId}`);
+            buttons.forEach(btn => {
+                if (parseInt(btn.dataset.size) === size) {
+                    btn.className = `size-btn-${productId} px-2.5 py-1 text-xs font-medium rounded-lg border bg-indigo-600 text-white border-indigo-600 transition-all`;
+                } else {
+                    btn.className = `size-btn-${productId} px-2.5 py-1 text-xs font-medium rounded-lg border bg-white text-gray-700 border-gray-200 hover:bg-gray-50 transition-all`;
+                }
+            });
+        }
+
+        function filterCategory(category) {
+            currentFilter = category;
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(btn => {
+                if (btn.textContent.trim() === category || (category === 'All' && btn.textContent.trim() === 'Semua')) {
+                    btn.className = 'category-btn active px-5 py-2.5 rounded-xl text-sm font-medium bg-indigo-600 text-white shadow-md shadow-indigo-200 transition-all';
+                } else {
+                    btn.className = 'category-btn px-5 py-2.5 rounded-xl text-sm font-medium bg-white text-gray-600 hover:bg-gray-100 border border-gray-200 transition-all';
+                }
+            });
+            renderProducts();
+        }
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            document.getElementById('mobile-search-input').value = searchQuery;
+            renderProducts();
+        });
+        document.getElementById('mobile-search-input').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            document.getElementById('search-input').value = searchQuery;
+            renderProducts();
+        });
+
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toast-message');
+            const icon = document.getElementById('toast-icon');
+            
+            msg.textContent = message;
+            icon.className = isSuccess ? "fa-solid fa-circle-check text-green-400 text-lg" : "fa-solid fa-circle-exclamation text-amber-400 text-lg";
+            
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+            }, 3000);
+        }
+
+        function openAdminModal() {
+            renderAdminProductList();
+            document.getElementById('admin-modal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+        }
+
+        function renderAdminProductList() {
+            const container = document.getElementById('admin-product-list');
+            container.innerHTML = products.map(p => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200 text-xs">
+                    <div class="flex items-center space-x-3">
+                        <img src="${p.image}" class="w-10 h-10 object-cover rounded-lg" onerror="this.src='https://placehold.co/100x100/f3f4f6/9ca3af?text=Sepatu'">
+                        <div>
+                            <span class="font-bold text-gray-900 block">${p.name}</span>
+                            <span class="text-gray-500">${p.brand} • ${formatRupiah(p.price)}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2.5 py-1 rounded-md font-bold ${p.inStock ? 'bg-green-100 text-green-700' : 'bg-rose-100 text-rose-700'}">
+                            ${p.inStock ? 'Tersedia' : 'Habis'}
+                        </span>
+                        <button onclick="toggleStock(${p.id})" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1.5 rounded-lg font-medium transition-all">
+                            ${p.inStock ? 'Tandai Habis' : 'Restock'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleStock(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                product.inStock = !product.inStock;
+                renderAdminProductList();
+                renderProducts();
+                showToast(`Status ${product.name} diperbarui!`, true);
+            }
+        }
+
+        function addNewProduct(event) {
+            event.preventDefault();
+            const name = document.getElementById('new-name').value;
+            const brand = document.getElementById('new-brand').value;
+            const price = parseFloat(document.getElementById('new-price').value);
+            const image = document.getElementById('new-image').value || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80';
+
+            const newId = products.length ? Math.max(...products.map(p => p.id)) + 1 : 1;
+            const newProduct = {
+                id: newId,
+                name,
+                brand,
+                price,
+                rating: 5.0,
+                reviews: 1,
+                image,
+                sizes: [39, 40, 41, 42, 43],
+                inStock: true
+            };
+
+            products.unshift(newProduct);
+            selectedSizes[newId] = 39;
+            renderProducts();
+            renderAdminProductList();
+            document.getElementById('add-product-form').reset();
+            showToast(`Produk "${name}" berhasil ditambahkan ke etalase!`);
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product || !product.inStock) return;
+            const size = selectedSizes[productId];
+            
+            const existingItem = cart.find(item => item.id === productId && item.size === size);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ ...product, size, qty: 1, cartId: `${productId}-${size}` });
+            }
+
+            updateCartUI();
+            showToast(`${product.name} (Ukuran ${size}) ditambahkan!`);
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const badge = document.getElementById('cart-badge');
+            const totalQtyEl = document.getElementById('cart-total-qty');
+            const totalPriceEl = document.getElementById('cart-total-price');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            let totalQty = 0;
+            let totalPrice = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 text-gray-400">
+                        <i class="fa-solid fa-basket-shopping text-5xl mb-3"></i>
+                        <p class="text-sm font-medium">Keranjang belanja kamu masih kosong.</p>
+                    </div>
+                `;
+                badge.classList.add('hidden');
+                checkoutBtn.disabled = true;
+            } else {
+                badge.classList.remove('hidden');
+                checkoutBtn.disabled = false;
+                container.innerHTML = cart.map(item => `
+                    <div class="flex items-center space-x-4 w-full py-3">
+                        <img src="${item.image}" class="w-16 h-16 object-cover rounded-xl bg-gray-100 flex-shrink-0" onerror="this.src='https://placehold.co/200x200/f3f4f6/9ca3af?text=Sepatu'">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-bold text-gray-900 text-sm truncate">${item.name}</h4>
+                            <p class="text-xs text-gray-500 mt-0.5">Ukuran: <span class="font-semibold text-indigo-600">${item.size}</span></p>
+                            <span class="text-xs font-bold text-indigo-600 block mt-1">${formatRupiah(item.price)}</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="changeQty('${item.cartId}', -1)" class="w-7 h-7 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-minus"></i></button>
+                            <span class="text-xs font-semibold w-5 text-center">${item.qty}</span>
+                            <button onclick="changeQty('${item.cartId}', 1)" class="w-7 h-7 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            cart.forEach(item => {
+                totalQty += item.qty;
+                totalPrice += item.price * item.qty;
+            });
+
+            badge.textContent = totalQty;
+            totalQtyEl.textContent = `${totalQty} pcs`;
+            totalPriceEl.textContent = formatRupiah(totalPrice);
+        }
+
+        function changeQty(cartId, delta) {
+            const item = cart.find(i => i.cartId === cartId);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) {
+                    cart = cart.filter(i => i.cartId !== cartId);
+                }
+                updateCartUI();
+            }
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        function openCheckoutModal() {
+            if (cart.length === 0) return;
+            toggleCart();
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function switchPaymentMethod(method) {
+            const cards = document.querySelectorAll('.payment-method-card');
+            cards.forEach(card => {
+                card.className = "payment-method-card border-2 border-gray-200 bg-white rounded-2xl p-3 flex flex-col cursor-pointer transition-all relative text-center hover:border-gray-300";
+            });
+
+            const activeCard = document.querySelector(`input[value="${method}"]`).closest('.payment-method-card');
+            activeCard.className = "payment-method-card border-2 border-indigo-600 bg-indigo-50/50 rounded-2xl p-3 flex flex-col cursor-pointer transition-all relative text-center";
+
+            const bankInstructions = document.getElementById('bank-instructions');
+            const fapsterInstructions = document.getElementById('fapster-instructions');
+            const codInstructions = document.getElementById('cod-instructions');
+
+            bankInstructions.classList.add('hidden');
+            fapsterInstructions.classList.add('hidden');
+            codInstructions.classList.add('hidden');
+
+            if (method === 'bank') {
+                bankInstructions.classList.remove('hidden');
+            } else if (method === 'fapster') {
+                fapsterInstructions.classList.remove('hidden');
+            } else if (method === 'cod') {
+                codInstructions.classList.remove('hidden');
+            }
+        }
+
+        function processCheckout(event) {
+            event.preventDefault();
+            const name = document.getElementById('buyer-name').value;
+            const phone = document.getElementById('buyer-phone').value;
+            const address = document.getElementById('buyer-address').value;
+            const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+            
+            let methodLabel = "";
+            let totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            if (paymentMethod === 'bank') {
+                const bankName = document.getElementById('bank-select').value;
+                methodLabel = `Transfer Bank ${bankName}`;
+            } else if (paymentMethod === 'fapster') {
+                const fapsterId = document.getElementById('fapster-id').value || "Fapster User";
+                methodLabel = `Fapster Account (${fapsterId})`;
+            } else {
+                methodLabel = `COD (Cash on Delivery)`;
+            }
+
+            const randomId = '#ADN-' + Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('receipt-id').textContent = randomId;
+            document.getElementById('receipt-method').textContent = methodLabel;
+            document.getElementById('receipt-total').textContent = formatRupiah(totalPrice);
+
+            closeCheckoutModal();
+            document.getElementById('success-modal').classList.remove('hidden');
+            
+            cart = [];
+            updateCartUI();
+            document.getElementById('checkout-form').reset();
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('success-modal').classList.add('hidden');
+        }
+
+        window.onload = function() {
+            renderProducts();
+        };
+    </script>
+</body>
+          </html>
